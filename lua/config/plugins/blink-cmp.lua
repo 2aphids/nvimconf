@@ -4,7 +4,10 @@ return {
   version = "*",
 
   opts = {
-    keymap = { preset = "default" },
+    keymap = {
+      preset = "default",
+      ["<S-Tab>"] = { "select_and_accept" },
+    },
     appearance = {
       use_nvim_cmp_as_default = true,
       nerd_font_variant = "mono",
