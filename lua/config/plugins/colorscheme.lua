@@ -1,5 +1,6 @@
 return {
-  { "ellisonleao/gruvbox.nvim" },
-  { "sainnhe/sonokai" },
-  { "catppuccin/nvim" },
+  { "ellisonleao/gruvbox.nvim"     },
+  { "sainnhe/sonokai"              },
+  { "catppuccin/nvim"              },
+  { "danilo-augusto/vim-afterglow" },
 }
