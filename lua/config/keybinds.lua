@@ -1,15 +1,17 @@
 require("config.utils")
 
 -- misc
-nmap('<C-s>',   "<cmd>StripWhitespace<cr><cmd>:w<cr>", {}) -- ctrl S, strip whitespace & save
-imap('<C-s>',   "<cmd>StripWhitespace<cr><cmd>:w<cr>", {}) -- ctrl S, strip whitespace & save
-nmap('<C-q>',   "<cmd>:q<cr><cr>", {})                     -- ctrl Q, quit
-nmap('<C-z>',   "<cmd>:u<cr>", {})                         -- ctrl Z, undo
-imap('<C-z>',   "<cmd>:u<cr>", {})                         -- ctrl Z, undo
-nmap('<C-S-z>', "<C-r>", {})                               -- ctrl shift Z, redo
-imap('<C-S-z>', "<C-r>", {})                               -- ctrl shift Z, redo
-nmap('<C-n>',   "<cmd>set nu!<cr>")
-imap('<A-3>',   "#")                                       -- for macOS
+nmap('<C-q>',   "<cmd>:q<cr><cr>", {}) -- ctrl Q, quit
+nmap('<C-z>',   "<cmd>:u<cr>", {})     -- ctrl Z, undo
+imap('<C-z>',   "<cmd>:u<cr>", {})     -- ctrl Z, undo
+nmap('<C-S-z>', "<C-r>", {})           -- ctrl shift Z, redo
+imap('<C-S-z>', "<C-r>", {})           -- ctrl shift Z, redo
+imap('<A-3>',   "#")                   -- for macOS
+nmap('<Esc>',   "<cmd>nohlsearch<cr>") -- clear search highlight on esc
+nmap('<C-s>',   "<cmd>:w<cr>", {})
+imap('<C-s>',   "<cmd>:w<cr>", {})
+
+-- indent & unindent
 vmap('<Tab>',   "<C->>gv")
 vmap('<S-Tab>', "<C-<>gv")
 
