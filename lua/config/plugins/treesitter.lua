@@ -9,7 +9,7 @@ return {
       sync_install = true,
       auto_install = true,
       highlight = { enable = true },
-      indent = { enable = true },
+      indent = { enable = false },
       ensure_installed = {
         "json",
         "javascript",
@@ -27,6 +27,10 @@ return {
         "gitignore",
         "c",
         "rust",
+        "gdscript",
+        "gdshader",
+        "godot_resource",
+        "glsl",
       },
     })
   end,
