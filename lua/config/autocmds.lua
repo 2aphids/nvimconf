@@ -12,3 +12,15 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       vim.fn.setpos(".", save_cursor)
     end,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = {".xresources"},
+    command = "ColorizerAttachToBuffer"
+})
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = {".xresources"},
+    callback = function()
+      os.execute("xrdb ~/.xresources");
+    end
+})
