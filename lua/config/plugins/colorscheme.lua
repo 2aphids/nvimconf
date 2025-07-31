@@ -3,16 +3,24 @@ return {
     lazy = false,
     priority = 1000, -- Plugin should be loaded early
     dependencies = {
-        'RRethy/nvim-base16', -- Lots of baked-in themes and support to add more
         {
-            -- 'folke/tokyonight.nvim',
-            -- opts = {
-            -- style = 'night',
-            -- },
-            { "ellisonleao/gruvbox.nvim"     },
-            { "sainnhe/sonokai"              },
-            { "catppuccin/nvim"              },
-            { "danilo-augusto/vim-afterglow" },
+            'folke/tokyonight.nvim',
+            opts = {
+              transparent = true,
+            },
+            {
+              "ellisonleao/gruvbox.nvim",
+              opts = {
+                transparent_mode = true,
+              }
+            },
+            {
+              "catppuccin/nvim",
+              name = "catppuccin",
+              opts = {
+                transparent_background = true,
+              }
+            },
         },
     },
     opts = {
