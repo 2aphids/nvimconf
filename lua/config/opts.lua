@@ -1,4 +1,4 @@
-local global = vim.g
+local g = vim.g
 local o = vim.opt
 
 o.number = true -- Print the line number in front of each line
@@ -26,5 +26,5 @@ o.termguicolors = true
 o.undofile = true
 o.undodir = os.getenv("HOME") .. "/.config/nvim/.undodir"
 
-global.mapleader = " "
-global.maplocalleader = "\\"
+g.mapleader = " "
+g.maplocalleader = "\\"
