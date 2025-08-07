@@ -10,7 +10,10 @@ imap('<A-3>',   "#")                   -- for macOS
 nmap('<Esc>',   "<cmd>nohlsearch<cr>") -- clear search highlight on esc
 nmap('<C-s>',   "<cmd>:w<cr>", {})
 imap('<C-s>',   "<cmd>:w<cr>", {})
+
+-- file search
 nvmap('<Leader>e', "<cmd>Neotree toggle<cr>")
+nvmap('<Leader>y', "<cmd>Yazi<cr>")
 
 -- buffers
 nmap('<A-1>', "<cmd>BufferLineGoToBuffer 1<cr>", {})
@@ -46,7 +49,8 @@ nvmap('<Leader>b', "<cmd>FzfLua buffers<cr>")
 nvmap('<Leader>c', "<cmd>FzfLua colorschemes<cr>")
 nvmap('<Leader>d', "<cmd>FzfLua oldfiles<cr>")
 nvmap('<Leader>f', "<cmd>FzfLua files<cr>")
- nmap('<Leader>g', "<cmd>FzfLua grep<cr>")
+ nmap('<Leader>gr', "<cmd>FzfLua grep<cr>")
  vmap('<Leader>g', "<cmd>FzfLua grep_visual<cr>")
+nvmap('<Leader>gd', "<cmd>FzfLua git_diff<cr>")
 nvmap('<Leader>o', "<cmd>FzfLua files<cr>")
 nvmap('<Leader>z', "<cmd>FzfLua zoxide<cr>")

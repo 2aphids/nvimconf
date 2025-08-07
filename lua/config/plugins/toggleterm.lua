@@ -4,6 +4,9 @@ return {
   "akinsho/toggleterm.nvim",
   version = "*",
   config = function()
-    require("toggleterm").setup()
+    require("toggleterm").setup{
+      hide_numbers = true,
+      autochdir = true
+    }
   end
 }
