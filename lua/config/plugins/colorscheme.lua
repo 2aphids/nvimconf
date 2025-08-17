@@ -4,9 +4,11 @@ return {
     priority = 1000, -- Plugin should be loaded early
     dependencies = {
         {
-            'folke/tokyonight.nvim',
-            opts = {
-              transparent = true,
+            {
+              "vague2k/vague.nvim",
+              opts = {
+                transparent = true,
+              }
             },
             {
               "ellisonleao/gruvbox.nvim",

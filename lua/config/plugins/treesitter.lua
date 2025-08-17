@@ -2,9 +2,6 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   lazy = false,
-  dependencies = {
-    "OXY2DEV/markview.nvim"
-  },
   config = function()
     local treesitter = require("nvim-treesitter.configs")
 
