@@ -1,3 +1,0 @@
-return {
-  "johnfrankmorgan/whitespace.nvim",
-}

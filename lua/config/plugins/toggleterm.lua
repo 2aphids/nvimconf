@@ -1,5 +1,3 @@
-require("config.utils")
-
 return {
   "akinsho/toggleterm.nvim",
   version = "*",

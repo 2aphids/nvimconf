@@ -1,7 +1,3 @@
-require("config.utils")
-
-nmap('<C-e>', "<cmd>Neotree<cr>", {})
-
 return {
   "nvim-neo-tree/neo-tree.nvim",
   branch = "v3.x",
