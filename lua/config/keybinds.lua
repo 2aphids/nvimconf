@@ -8,8 +8,8 @@ end
 -- misc
 map('ni', '<C-z>',   "<cmd>:u<cr>")         -- ctrl Z, undo
 map('ni', '<C-S-z>', "<C-r>")               -- ctrl shift Z, redo
-map('i', '<A-3>',   "#")                   -- for macOS
-map('n', '<Esc>',   "<cmd>nohlsearch<cr>") -- clear search highlight on esc
+map('i',  '<A-3>',   "#")                   -- for macOS
+map('n',  '<Esc>',   "<cmd>nohlsearch<cr>") -- clear search highlight on esc
 map('ni', '<C-s>',   "<cmd>:w<cr>")
 
 -- buffers
@@ -22,7 +22,6 @@ map('n', '<A-6>', "<cmd>BufferLineGoToBuffer 6<cr>")
 map('n', '<A-7>', "<cmd>BufferLineGoToBuffer 7<cr>")
 map('n', '<A-8>', "<cmd>BufferLineGoToBuffer 8<cr>")
 map('n', '<A-9>', "<cmd>BufferLineGoToBuffer 9<cr>")
-map('n', '<A-0>', "<cmd>BufferLineGoToBuffer -1<cr>")
 map('nv', '<A-w>', "<cmd>BufferLineCycleNext<cr><cmd>bd #<cr>")
 
 -- indent & unindent
@@ -46,7 +45,7 @@ map('nv', '<Leader>t', "<cmd>ToggleTerm<cr>")
 map('nv', '<Leader>c', "<cmd>FzfLua colorschemes<cr>")
 map('nv', '<Leader>f', "<cmd>FzfLua files<cr>")
 map('nv', '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
-map('n',  '<Leader>s', "<cmd>FzfLua grep<cr>")
+map('n',  '<Leader>g', "<cmd>FzfLua grep<cr>")
 map('v',  '<Leader>g', "<cmd>FzfLua grep_visual<cr>")
 map('nv', '<Leader>d', "<cmd>FzfLua git_diff<cr>")
 map('nv', '<Leader>z', "<cmd>FzfLua zoxide<cr>")
