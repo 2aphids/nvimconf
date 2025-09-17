@@ -24,3 +24,10 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
       os.execute("xrdb ~/.xresources");
     end
 })
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    pattern = {"dunstrc"},
+    callback = function()
+      os.execute("kill $(pidof dunst); dunst & disown; notify-send -i ~/pic/react/ragebait.png title body....");
+    end
+})
