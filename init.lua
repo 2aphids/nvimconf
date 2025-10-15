@@ -28,7 +28,11 @@ vim.o.splitbelow = true
 vim.o.termguicolors = true
 vim.o.winborder = "bold"
 
-function get_child_notes()
+vim.lsp.enable('clangd')
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('gdscript')
+
+local function get_child_notes()
   require'fzf-lua'.fzf_exec("get_child_notes.sh '"..vim.fs.basename(vim.api.nvim_buf_get_name(0)).."'", {
       actions = {
         ['default'] = require'fzf-lua'.actions.file_edit
@@ -123,6 +127,18 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   "norcalli/nvim-colorizer.lua",
   "folke/which-key.nvim",
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "folke/lazydev.nvim",
+      ft = "lua",
+      opts = {
+      	library = {
+          { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        }
+      },
+    },
+  },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" }
