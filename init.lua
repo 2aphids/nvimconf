@@ -28,10 +28,6 @@ vim.o.splitbelow = true
 vim.o.termguicolors = true
 vim.o.winborder = "bold"
 
-vim.lsp.enable('clangd')
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('gdscript')
-
 local function get_child_notes()
   require'fzf-lua'.fzf_exec("get_child_notes.sh '"..vim.fs.basename(vim.api.nvim_buf_get_name(0)).."'", {
       actions = {
@@ -46,7 +42,7 @@ vim.keymap.set({'n', 'i'}, '<C-S-z>',   "<C-r>")               -- ctrl shift Z, 
 vim.keymap.set({'i'},      '<A-3>',     "#")                   -- for macOS
 vim.keymap.set({'n'},      '<Esc>',     "<cmd>nohlsearch<cr>") -- clear search highlight on esc
 vim.keymap.set({'n', 'i'}, '<C-s>',     "<cmd>:w<cr>")
-vim.keymap.set({'n', 'i'}, '<Leader>h', get_child_notes)
+vim.keymap.set({'n'},      '<Leader>h', get_child_notes)
 
 -- buffers
 vim.keymap.set({'n'},      '<A-1>', "<cmd>bp<cr>")
@@ -73,6 +69,11 @@ vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep<cr>")
 vim.keymap.set({'v'},      '<Leader>g', "<cmd>FzfLua grep_visual<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>FzfLua git_diff<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>z', "<cmd>FzfLua zoxide<cr>")
+
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('cssls')
+vim.lsp.enable('clangd')
+vim.lsp.enable('gdscript')
 
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function() vim.highlight.on_yank() end,
@@ -128,6 +129,19 @@ require("lazy").setup({
   "norcalli/nvim-colorizer.lua",
   "folke/which-key.nvim",
   {
+    "saghen/blink.cmp",
+    version = "1.*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      keymap     = { preset = "default" },
+      appearance = { nerd_font_variant = "mono" },
+      completion = { documentation = { auto_show = false } },
+      sources    = { default = { "lsp", "path", "snippets", "buffer" } },
+      fuzzy      = { implementation = "prefer_rust" }
+    },
+    opts_extend = { "sources.default" }
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "folke/lazydev.nvim",
@@ -160,11 +174,13 @@ require("lazy").setup({
       },
       files = {
         prompt = "Files",
-        file_icons = false
+        file_icons = false,
+        hidden = false
       },
       oldfiles = {
         prompt = "Files",
-        file_icons = false
+        file_icons = false,
+        hidden = false
       }
     }
   },
