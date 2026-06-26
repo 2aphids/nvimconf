@@ -28,21 +28,13 @@ vim.o.splitbelow = true
 vim.o.termguicolors = true
 vim.o.winborder = "bold"
 
-local function get_child_notes()
-  require'fzf-lua'.fzf_exec("get_child_notes.sh '"..vim.fs.basename(vim.api.nvim_buf_get_name(0)).."'", {
-      actions = {
-        ['default'] = require'fzf-lua'.actions.file_edit
-      }
-  })
-end
-
 -- misc
-vim.keymap.set({"n", "i"}, '<C-z>',     "<cmd>:u<cr>")           -- ctrl Z, undo
+-- vim.keymap.set({"n", "i"}, '<C-z>',     "<cmd>:u<cr>")           -- ctrl Z, undo
 vim.keymap.set({'n', 'i'}, '<C-S-z>',   "<C-r>")               -- ctrl shift Z, redo
 vim.keymap.set({'i'},      '<A-3>',     "#")                   -- for macOS
 vim.keymap.set({'n'},      '<Esc>',     "<cmd>nohlsearch<cr>") -- clear search highlight on esc
 vim.keymap.set({'n', 'i'}, '<C-s>',     "<cmd>:w<cr>")
-vim.keymap.set({'n'},      '<Leader>h', get_child_notes)
+vim.keymap.set({'n', 'v', 'i'}, '<F5>', "<cmd>:make<cr>")
 
 -- buffers
 vim.keymap.set({'n'},      '<A-1>', "<cmd>bp<cr>")
@@ -62,7 +54,7 @@ vim.keymap.set({'n', 't'}, '<c-l>', "<cmd>wincmd l<cr>")
 -- fzf
 vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>FzfLua buffers<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>FzfLua colorschemes<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>Neotree toggle reveal float<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>Neotree toggle reveal left<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>FzfLua files<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
 vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep<cr>")
@@ -74,6 +66,15 @@ vim.lsp.enable('lua_ls')
 vim.lsp.enable('cssls')
 vim.lsp.enable('clangd')
 vim.lsp.enable('gdscript')
+vim.lsp.enable('gdshader')
+vim.lsp.enable('ts_ls')
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "gdshader",
+  callback = function()
+    vim.bo.commentstring = "// %s"
+  end
+})
 
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function() vim.highlight.on_yank() end,
@@ -94,6 +95,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = {".xresources"},
     command = "ColorizerAttachToBuffer"
 })
+
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     pattern = {".xresources"},
@@ -126,8 +128,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  "gmr458/cold.nvim",
+  "HoNamDuong/hybrid.nvim",
   "norcalli/nvim-colorizer.lua",
   "folke/which-key.nvim",
+  "catppuccin/nvim",
   {
     "saghen/blink.cmp",
     version = "1.*",
@@ -137,7 +142,7 @@ require("lazy").setup({
       appearance = { nerd_font_variant = "mono" },
       completion = { documentation = { auto_show = false } },
       sources    = { default = { "lsp", "path", "snippets", "buffer" } },
-      fuzzy      = { implementation = "prefer_rust" }
+      fuzzy      = { implementation = "lua" }
     },
     opts_extend = { "sources.default" }
   },
@@ -154,6 +159,9 @@ require("lazy").setup({
     },
   },
   {
+    "nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"
+  },
+  {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" }
   },
@@ -167,7 +175,7 @@ require("lazy").setup({
     opts = {
       winopts = {
         fullscreen = true,
-        border = "solid",
+        border = "none",
         preview = {
           hidden = true
         }
@@ -181,6 +189,15 @@ require("lazy").setup({
         prompt = "Files",
         file_icons = false,
         hidden = false
+      },
+      fzf_colors = {
+        true
+      },
+      fzf_opts = {
+        ["--padding"] = 8,
+        ["--style"] = "minimal",
+        ["--keep-right"] = true,
+        ["--hscroll-off"] = 200
       }
     }
   },
@@ -194,6 +211,13 @@ require("lazy").setup({
     },
     opts = {
       close_if_last_window = true,
+      filesystem = {
+        filtered_items = {
+          hide_by_pattern = {
+            "*.uid",
+          }
+        },
+      },
       window = {
         mappings = {
           ["l"] = "open",
@@ -207,12 +231,39 @@ require("lazy").setup({
             require("neo-tree.command").execute({ action = "close" })
           end
         },
+      },
+      filesystem = {
+        bind_to_cwd = true, -- true creates a 2-way binding between vim's cwd and neo-tree's root
+        cwd_target = {
+          sidebar = "tab",   -- sidebar is when position = left or right
+          current = "window" -- current is when position = current
+        },
       }
     },
   }
 })
 
 require('colorizer').setup()
+
+require('catppuccin').setup({
+  transparent_background = true
+})
+
+require("hybrid").setup({
+    terminal_colors = true,
+    undercurl = true,
+    underline = true,
+    bold = true,
+    italic = {
+        strings = false,
+        emphasis = true,
+        comments = true,
+        folds = true,
+    },
+    strikethrough = true,
+    inverse = true,
+    transparent = true,
+})
 
 require('lualine').setup {
   options = { section_separators = '', component_separators = '' },
@@ -237,4 +288,4 @@ require('lualine').setup {
   },
 }
 
-vim.cmd [[colorscheme gruvbox]]
+vim.cmd [[colorscheme hybrid]]
