@@ -59,9 +59,10 @@ vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>FzfLua files<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
 vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep<cr>")
 vim.keymap.set({'v'},      '<Leader>g', "<cmd>FzfLua grep_visual<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>FzfLua git_diff<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>e %:p:h<cr>") -- change working dir to current file's
 vim.keymap.set({'n', 'v'}, '<Leader>z', "<cmd>FzfLua zoxide<cr>")
 
+-- vim.lsp.enable('roslyn')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('cssls')
 vim.lsp.enable('clangd')
@@ -129,22 +130,34 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   "gmr458/cold.nvim",
+  {
+    "GustavEikaas/easy-dotnet.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", 'folke/snacks.nvim', },
+    config = function()
+      require("easy-dotnet").setup({
+        lsp = {
+          auto_refresh_codelens = false,
+        }
+      })
+    end
+  },
+  "folke/which-key.nvim",
   "HoNamDuong/hybrid.nvim",
   "norcalli/nvim-colorizer.lua",
-  "folke/which-key.nvim",
   "catppuccin/nvim",
   {
-    "saghen/blink.cmp",
-    version = "1.*",
-    dependencies = { "rafamadriz/friendly-snippets" },
-    opts = {
-      keymap     = { preset = "default" },
-      appearance = { nerd_font_variant = "mono" },
-      completion = { documentation = { auto_show = false } },
-      sources    = { default = { "lsp", "path", "snippets", "buffer" } },
-      fuzzy      = { implementation = "lua" }
-    },
-    opts_extend = { "sources.default" }
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" }
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    opts = { transparent_mode = true, }
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = 'master',
+    lazy = false,
+    build = ":TSUpdate"
   },
   {
     "neovim/nvim-lspconfig",
@@ -159,15 +172,17 @@ require("lazy").setup({
     },
   },
   {
-    "nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" }
-  },
-  {
-    "ellisonleao/gruvbox.nvim",
-    opts = { transparent_mode = true, }
+    "saghen/blink.cmp",
+    version = "1.*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      keymap     = { preset = "default" },
+      appearance = { nerd_font_variant = "mono" },
+      completion = { documentation = { auto_show = false } },
+      sources    = { default = { "lsp", "path", "snippets", "buffer" } },
+      fuzzy      = { implementation = "lua" }
+    },
+    opts_extend = { "sources.default" }
   },
   {
     "ibhagwan/fzf-lua",
