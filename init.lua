@@ -22,7 +22,7 @@ vim.o.mouse = "a"
 vim.o.title = true
 vim.o.hidden = true
 vim.o.ttimeoutlen = 0
--- vim.o.wildmenu = true
+vim.o.wildmenu = true
 vim.o.showcmd = true
 vim.o.showmatch = true
 vim.o.inccommand = "split"
@@ -55,21 +55,14 @@ vim.keymap.set({'n', 't'}, '<c-j>', "<cmd>wincmd j<cr>")
 vim.keymap.set({'n', 't'}, '<c-k>', "<cmd>wincmd k<cr>")
 vim.keymap.set({'n', 't'}, '<c-l>', "<cmd>wincmd l<cr>")
 
--- fzf
-vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>FzfLua buffers<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>FzfLua colorschemes<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>Pick buffers<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>Pick colorschemes<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>lua MiniFiles.open()<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>FzfLua files<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
-vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep<cr>")
-vim.keymap.set({'v'},      '<Leader>g', "<cmd>FzfLua grep_visual<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>Pick files<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>Pick oldfiles<cr>")
+vim.keymap.set({'n'},      '<Leader>g', "<cmd>Pick grep_live<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>e %:p:h<cr>") -- change working dir to current file's
-vim.keymap.set({'n', 'v'}, '<Leader>z', "<cmd>FzfLua zoxide<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>ld', "<cmd>FzfLua lsp_definitions<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>le', "<cmd>FzfLua lsp_document_diagnostics<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>lc', "<cmd>FzfLua lsp_code_actions<cr>")
 
--- vim.lsp.enable('roslyn')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('cssls')
 vim.lsp.enable('clangd')
@@ -102,12 +95,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     end,
 })
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = {".xresources"},
-    command = "ColorizerAttachToBuffer"
-})
-
-
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     pattern = {".xresources"},
     callback = function()
@@ -123,7 +110,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 })
 
 --=----------=--
---=---LAZY---=--
+--=---PLUG---=--
 --=----------=--
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -144,17 +131,24 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   "folke/which-key.nvim",
   "HoNamDuong/hybrid.nvim",
-  "norcalli/nvim-colorizer.lua",
   "catppuccin/nvim",
-  "gmr458/cold.nvim",
+  {
+    'gmr458/cold.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('cold').setup({ transparent_background = true })
+      vim.cmd.colorscheme 'cold'
+    end,
+  },
   {
     "nvim-mini/mini.nvim",
     version = '*',
   },
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" }
-  },
+  -- {
+  --   "nvim-lualine/lualine.nvim",
+  --   dependencies = { "nvim-tree/nvim-web-devicons" }
+  -- },
   {
     "ellisonleao/gruvbox.nvim",
     opts = { transparent_mode = true, }
@@ -201,83 +195,69 @@ require("lazy").setup({
     },
     opts_extend = { "sources.default" }
   },
-  {
-    "ibhagwan/fzf-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      winopts = {
-        fullscreen = true,
-        border = "none",
-        preview = {
-          hidden = true
-        }
-      },
-      files = {
-        prompt = "Files",
-        file_icons = false,
-        hidden = false
-      },
-      oldfiles = {
-        prompt = "Files",
-        file_icons = false,
-        hidden = false
-      },
-      fzf_colors = {
-        true
-      },
-      fzf_opts = {
-        ["--padding"] = 8,
-        ["--style"] = "minimal",
-        ["--keep-right"] = true,
-        ["--hscroll-off"] = 200
-      }
-    }
+  -- {
+  --   "ibhagwan/fzf-lua",
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  --   -- opts = {
+  --   --   winopts = {
+  --   --     fullscreen = true,
+  --   --     border = "none",
+  --   --     preview = {
+  --   --       hidden = true
+  --   --     }
+  --   --   },
+  --   --   files = {
+  --   --     prompt = "Files",
+  --   --     file_icons = false,
+  --   --     hidden = false
+  --   --   },
+  --   --   oldfiles = {
+  --   --     prompt = "Files",
+  --   --     file_icons = false,
+  --   --     hidden = false
+  --   --   },
+  --   --   fzf_colors = {
+  --   --     true
+  --   --   },
+  --   --   fzf_opts = {
+  --   --     ["--padding"] = 8,
+  --   --     ["--style"] = "minimal",
+  --   --     ["--keep-right"] = true,
+  --   --     ["--hscroll-off"] = 200
+  --   --   }
+  --   -- }
+  -- },
+})
+
+require('mini.indentscope').setup()
+require('mini.icons').setup()
+require('mini.jump').setup()
+require('mini.pick').setup()
+require('mini.extra').setup()
+require('mini.statusline').setup()
+
+require('mini.hipatterns').setup({
+  highlighters = {
+    -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+    fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+    hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
+    todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
+    note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
+    -- Highlight hex color strings (`#rrggbb`) using that color
+    hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
   },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim"
-    },
-    opts = {
-      close_if_last_window = true,
-      filesystem = {
-        filtered_items = {
-          hide_by_pattern = {
-            "*.uid",
-          }
-        },
-      },
-      window = {
-        mappings = {
-          ["l"] = "open",
-          ["<C-e>"] = "close_window",
-        },
-      },
-      event_handlers = {
-        {
-          event = "file_open_requested",
-          handler = function()
-            require("neo-tree.command").execute({ action = "close" })
-          end
-        },
-      },
-      filesystem = {
-        bind_to_cwd = true, -- true creates a 2-way binding between vim's cwd and neo-tree's root
-        cwd_target = {
-          sidebar = "tab",   -- sidebar is when position = left or right
-          current = "window" -- current is when position = current
-        },
-      }
-    },
+})
+
+require('mini.files').setup({
+  windows = {
+    preview = true,
+    width_preview = 60
   }
 })
 
-require('mini.files').setup()
-
-require('colorizer').setup()
+require('mini.cmdline').setup({
+  delay = 5.0,
+})
 
 require('catppuccin').setup({
   transparent_background = true
@@ -299,27 +279,27 @@ require("hybrid").setup({
     transparent = true,
 })
 
-require('lualine').setup {
-  options = { section_separators = '', component_separators = '' },
-  sections = {
-    lualine_a =
-    {
-      'mode',
-      {
-        'buffers',
-        show_filename_only = false,
-        mode = 3
-      }
-    },
-    lualine_b = {'diff', 'diagnostics'},
-    lualine_c = {
-      'filename',
-    },
-
-    lualine_x = {'fileformat'},
-    lualine_y = {},
-    lualine_z = {'location'}
-  },
-}
+-- require('lualine').setup {
+--   options = { section_separators = '', component_separators = '' },
+--   sections = {
+--     lualine_a =
+--     {
+--       'mode',
+--       {
+--         'buffers',
+--         show_filename_only = false,
+--         mode = 3
+--       }
+--     },
+--     lualine_b = {'diff', 'diagnostics'},
+--     lualine_c = {
+--       'filename',
+--     },
+--
+--     lualine_x = {'fileformat'},
+--     lualine_y = {},
+--     lualine_z = {'location'}
+--   },
+-- }
 
 vim.cmd [[colorscheme hybrid]]
