@@ -1,3 +1,6 @@
+--=----------=--
+--=---OPTS---=--
+--=----------=--
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -28,8 +31,9 @@ vim.o.splitbelow = true
 vim.o.termguicolors = true
 vim.o.winborder = "bold"
 
--- misc
--- vim.keymap.set({"n", "i"}, '<C-z>',     "<cmd>:u<cr>")           -- ctrl Z, undo
+--=----------=--
+--=---BIND---=--
+--=----------=--
 vim.keymap.set({'n', 'i'}, '<C-S-z>',   "<C-r>")               -- ctrl shift Z, redo
 vim.keymap.set({'i'},      '<A-3>',     "#")                   -- for macOS
 vim.keymap.set({'n'},      '<Esc>',     "<cmd>nohlsearch<cr>") -- clear search highlight on esc
@@ -54,13 +58,16 @@ vim.keymap.set({'n', 't'}, '<c-l>', "<cmd>wincmd l<cr>")
 -- fzf
 vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>FzfLua buffers<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>FzfLua colorschemes<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>Neotree toggle reveal left<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>lua MiniFiles.open()<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>FzfLua files<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
 vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep<cr>")
 vim.keymap.set({'v'},      '<Leader>g', "<cmd>FzfLua grep_visual<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>e %:p:h<cr>") -- change working dir to current file's
 vim.keymap.set({'n', 'v'}, '<Leader>z', "<cmd>FzfLua zoxide<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>ld', "<cmd>FzfLua lsp_definitions<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>le', "<cmd>FzfLua lsp_document_diagnostics<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>lc', "<cmd>FzfLua lsp_code_actions<cr>")
 
 -- vim.lsp.enable('roslyn')
 vim.lsp.enable('lua_ls')
@@ -70,6 +77,9 @@ vim.lsp.enable('gdscript')
 vim.lsp.enable('gdshader')
 vim.lsp.enable('ts_ls')
 
+--=----------=--
+--=-AUTOCMDS-=--
+--=----------=--
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "gdshader",
   callback = function()
@@ -112,6 +122,9 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     end
 })
 
+--=----------=--
+--=---LAZY---=--
+--=----------=--
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -129,22 +142,15 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "gmr458/cold.nvim",
-  {
-    "GustavEikaas/easy-dotnet.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", 'folke/snacks.nvim', },
-    config = function()
-      require("easy-dotnet").setup({
-        lsp = {
-          auto_refresh_codelens = false,
-        }
-      })
-    end
-  },
   "folke/which-key.nvim",
   "HoNamDuong/hybrid.nvim",
   "norcalli/nvim-colorizer.lua",
   "catppuccin/nvim",
+  "gmr458/cold.nvim",
+  {
+    "nvim-mini/mini.nvim",
+    version = '*',
+  },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" }
@@ -158,6 +164,17 @@ require("lazy").setup({
     branch = 'master',
     lazy = false,
     build = ":TSUpdate"
+  },
+  {
+    "GustavEikaas/easy-dotnet.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", 'folke/snacks.nvim', },
+    config = function()
+      require("easy-dotnet").setup({
+        lsp = {
+          auto_refresh_codelens = false,
+        }
+      })
+    end
   },
   {
     "neovim/nvim-lspconfig",
@@ -257,6 +274,8 @@ require("lazy").setup({
     },
   }
 })
+
+require('mini.files').setup()
 
 require('colorizer').setup()
 
