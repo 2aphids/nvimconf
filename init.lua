@@ -55,12 +55,12 @@ vim.keymap.set({'n', 't'}, '<c-j>', "<cmd>wincmd j<cr>")
 vim.keymap.set({'n', 't'}, '<c-k>', "<cmd>wincmd k<cr>")
 vim.keymap.set({'n', 't'}, '<c-l>', "<cmd>wincmd l<cr>")
 
-vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>Pick buffers<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>Pick colorschemes<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>b', "<cmd>FzfLua buffers<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>c', "<cmd>FzfLua colorschemes<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>e', "<cmd>lua MiniFiles.open()<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>Pick files<cr>")
-vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>Pick oldfiles<cr>")
-vim.keymap.set({'n'},      '<Leader>g', "<cmd>Pick grep_live<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>f', "<cmd>FzfLua files<cr>")
+vim.keymap.set({'n', 'v'}, '<Leader>o', "<cmd>FzfLua oldfiles<cr>")
+vim.keymap.set({'n'},      '<Leader>g', "<cmd>FzfLua grep_live<cr>")
 vim.keymap.set({'n', 'v'}, '<Leader>d', "<cmd>e %:p:h<cr>") -- change working dir to current file's
 
 vim.lsp.enable('lua_ls')
@@ -129,26 +129,19 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "folke/which-key.nvim",
-  "HoNamDuong/hybrid.nvim",
-  "catppuccin/nvim",
   {
-    'gmr458/cold.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('cold').setup({ transparent_background = true })
-      vim.cmd.colorscheme 'cold'
-    end,
+    "ibhagwan/fzf-lua",
+  },
+  {
+  "folke/which-key.nvim",
+  },
+  {
+  "HoNamDuong/hybrid.nvim",
   },
   {
     "nvim-mini/mini.nvim",
     version = '*',
   },
-  -- {
-  --   "nvim-lualine/lualine.nvim",
-  --   dependencies = { "nvim-tree/nvim-web-devicons" }
-  -- },
   {
     "ellisonleao/gruvbox.nvim",
     opts = { transparent_mode = true, }
@@ -158,6 +151,15 @@ require("lazy").setup({
     branch = 'master',
     lazy = false,
     build = ":TSUpdate"
+  },
+  {
+    'gmr458/cold.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('cold').setup({ transparent_background = true })
+      vim.cmd.colorscheme 'cold'
+    end,
   },
   {
     "GustavEikaas/easy-dotnet.nvim",
@@ -195,45 +197,11 @@ require("lazy").setup({
     },
     opts_extend = { "sources.default" }
   },
-  -- {
-  --   "ibhagwan/fzf-lua",
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   -- opts = {
-  --   --   winopts = {
-  --   --     fullscreen = true,
-  --   --     border = "none",
-  --   --     preview = {
-  --   --       hidden = true
-  --   --     }
-  --   --   },
-  --   --   files = {
-  --   --     prompt = "Files",
-  --   --     file_icons = false,
-  --   --     hidden = false
-  --   --   },
-  --   --   oldfiles = {
-  --   --     prompt = "Files",
-  --   --     file_icons = false,
-  --   --     hidden = false
-  --   --   },
-  --   --   fzf_colors = {
-  --   --     true
-  --   --   },
-  --   --   fzf_opts = {
-  --   --     ["--padding"] = 8,
-  --   --     ["--style"] = "minimal",
-  --   --     ["--keep-right"] = true,
-  --   --     ["--hscroll-off"] = 200
-  --   --   }
-  --   -- }
-  -- },
 })
 
 require('mini.indentscope').setup()
 require('mini.icons').setup()
 require('mini.jump').setup()
-require('mini.pick').setup()
-require('mini.extra').setup()
 require('mini.statusline').setup()
 
 require('mini.hipatterns').setup({
@@ -259,47 +227,20 @@ require('mini.cmdline').setup({
   delay = 5.0,
 })
 
-require('catppuccin').setup({
-  transparent_background = true
-})
-
 require("hybrid").setup({
-    terminal_colors = true,
-    undercurl = true,
-    underline = true,
-    bold = true,
-    italic = {
-        strings = false,
-        emphasis = true,
-        comments = true,
-        folds = true,
-    },
-    strikethrough = true,
-    inverse = true,
-    transparent = true,
+  terminal_colors = true,
+  undercurl = true,
+  underline = true,
+  bold = true,
+  italic = {
+    strings = false,
+    emphasis = true,
+    comments = true,
+    folds = true,
+  },
+  strikethrough = true,
+  inverse = true,
+  transparent = true,
 })
-
--- require('lualine').setup {
---   options = { section_separators = '', component_separators = '' },
---   sections = {
---     lualine_a =
---     {
---       'mode',
---       {
---         'buffers',
---         show_filename_only = false,
---         mode = 3
---       }
---     },
---     lualine_b = {'diff', 'diagnostics'},
---     lualine_c = {
---       'filename',
---     },
---
---     lualine_x = {'fileformat'},
---     lualine_y = {},
---     lualine_z = {'location'}
---   },
--- }
 
 vim.cmd [[colorscheme hybrid]]
